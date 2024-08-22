@@ -3,36 +3,50 @@ import { Button, SafeAreaView, StyleSheet, Text, TextInput, View } from "react-n
 
 export default function T1Laskin() {
 
-    const [answer, setAnswer] = useState("");
+    const [result, setResult] = useState("");
     const [input1, setInput1] = useState("");
     const [input2, setInput2] = useState("");
 
+    const calculatePlus = () => {
+        const sum = Number(input1) + Number(input2);
+        setResult(sum.toString());
+    }
+
+    const calculateMinus = () => {
+        const difference = Number(input1) - Number(input2);
+        setResult(difference.toString());
+    }
 
 
     return (
         <SafeAreaView /* apparently this is IOS only: https://reactnative.dev/docs/safeareaview */>
             <View style={styles.containerBasic}>
                 <View style={styles.containerResult}>
-                    <Text style={styles.textResult}>Result: {answer}</Text>
+                    <Text style={styles.textResult}>Result: {result}</Text>
                 </View>
-                    <TextInput
-                        style={styles.input}
-                        inputMode="numeric"
-                        value={input1}
-                        onChangeText={setInput1}>
-                    </TextInput>
-                    <TextInput
-                        style={styles.input}
-                        inputMode="numeric"
-                        value={input2}
-                        onChangeText={setInput2}>
-                    </TextInput>
+                <TextInput
+                    style={styles.input}
+                    inputMode="numeric"
+                    value={input1}
+                    onChangeText={setInput1}>
+                </TextInput>
+                <TextInput
+                    style={styles.input}
+                    inputMode="numeric"
+                    value={input2}
+                    onChangeText={setInput2}>
+                </TextInput>
                 <View style={styles.buttons}>
                     <View style={styles.buttonWrapper}>
-                        <Button title="+"></Button>
+                        <Button
+                            title="+"
+                            onPress={calculatePlus}
+                        ></Button>
                     </View>
                     <View style={styles.buttonWrapper}>
-                        <Button title="-" ></Button>
+                        <Button
+                         title="-"
+                         onPress={calculateMinus} ></Button>
                     </View>
                 </View>
             </View>
@@ -47,7 +61,7 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     buttonWrapper: {
-        // Yes, this could be done with e.g. justifyContent: "spaced-evenly" in the buttons style.
+        // Yes, this could probably be done with e.g. justifyContent: "spaced-evenly" in the buttons style.
         marginHorizontal: 10,
     },
     containerBasic: {
