@@ -1,13 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import T1Laskin from './T1Laskin';
-import T2NumeronArvaus from './T2NumeronArvaus';
+import { Link } from 'expo-router';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <T2NumeronArvaus />
+        <Text>Welcome to Mobiiliohjelmointi homework app by Ali Romar</Text>        
       <StatusBar style="auto" />
+      <Link href="/T1Laskin" style={{ color: 'blue'}}>
+      Tehtävä 1 (Laskin)      
+      </Link>
+      <Link href="/T2NumeronArvaus" style={{ color: 'blue'}}>
+      Tehtävä 2 (Numeron arvaus)      
+      </Link>
     </View>
   );
 }

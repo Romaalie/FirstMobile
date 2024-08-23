@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Alert, Button, SafeAreaView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 
 export default function T2NumeronArvaus() {
@@ -62,24 +63,26 @@ export default function T2NumeronArvaus() {
     /* LOGIC HERE END */
 
     return (
-        <SafeAreaView>
-            <View style={styles.containerBasic}>
-                <Text style={styles.textResult}>{response}</Text>
-                <TextInput
-                    style={styles.input}
-                    inputMode="numeric"
-                    value={input}
-                    onChangeText={setInput}
-                >
-                </TextInput>
-                <Button
-                    title="Make guess"
-                    onPress={checkAnswer}>
+        <SafeAreaProvider>
+            <SafeAreaView style={styles.safeArea}>
+                <View style={styles.containerBasic}>
+                    <Text style={styles.textResult}>{response}</Text>
+                    <TextInput
+                        style={styles.input}
+                        inputMode="numeric"
+                        value={input}
+                        onChangeText={setInput}
+                    >
+                    </TextInput>
+                    <Button
+                        title="Make guess"
+                        onPress={checkAnswer}>
 
-                </Button>
-            </View>
+                    </Button>
+                </View>
 
-        </SafeAreaView>
+            </SafeAreaView>
+        </SafeAreaProvider>
     )
 
 }
@@ -101,5 +104,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: 'bold',
         margin: 5
+    },
+    safeArea: {
+        flex: 1,
     }
 });
