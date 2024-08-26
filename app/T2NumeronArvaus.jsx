@@ -9,23 +9,29 @@ export default function T2NumeronArvaus() {
 
     const [correctNumber, setCorrectNumber] = useState("");
     const [input, setInput] = useState("");
-    const [response, setResponse] = useState("");
+    const [response, setResponse] = useState("Guess a number between 1-100");
     const [counter, setCounter] = useState(0);
     const resetNumber = Math.floor(Math.random() * 100) + 1
 
     //Initialize the number on first render
     useEffect(() => {
         setCorrectNumber(resetNumber)
+        console.log("Correct number is: " + resetNumber)
     }, [])
 
+
     const checkAnswer = () => {
-        if (!input && counter > 20) {
+        let currentCounter = counter;
+        currentCounter++;
+        console.log("Correct number is: " + correctNumber)
+
+        if (!input && currentCounter > 20) {
             setResponse("Misclick? Tired of guessing?")
         }
         else if (!input) {
             setResponse("I won't count that one but put a bloody number in it")
         }
-        else if (input == correctNumber && counter == 0) {
+        else if (input == correctNumber && currentCounter == 1) {
             Alert.alert(
                 'Holy macaroni!',
                 'You guessed the number on the first try! Go put in a lottery ticket right now!!',
@@ -39,7 +45,7 @@ export default function T2NumeronArvaus() {
         else if (input == correctNumber) {
             Alert.alert(
                 'You did it old chap!',
-                'You guessed the number in ' + counter + ' guesses',
+                'You guessed the number in ' + currentCounter + ' guesses',
                 [{ text: 'ok' }]
             )
             setCounter(0);
@@ -49,16 +55,14 @@ export default function T2NumeronArvaus() {
         }
         else if (input < correctNumber) {
             setResponse("Your guess " + input + " is too low")
-            setCounter(counter + 1);
+            setCounter(currentCounter);
             setInput("");
         }
         else if (input > correctNumber) {
             setResponse("Your guess " + input + " is too high")
-            setCounter(counter + 1);
+            setCounter(currentCounter);
             setInput("");
         }
-
-
     }
     /* LOGIC HERE END */
 
@@ -77,10 +81,8 @@ export default function T2NumeronArvaus() {
                     <Button
                         title="Make guess"
                         onPress={checkAnswer}>
-
                     </Button>
                 </View>
-
             </SafeAreaView>
         </SafeAreaProvider>
     )
