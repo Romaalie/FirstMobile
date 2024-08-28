@@ -13,6 +13,9 @@ export default function App() {
       <Link href="/T2NumeronArvaus" style={{ color: 'blue'}}>
       Tehtävä 2 (Numeron arvaus)      
       </Link>
+      <Link href="/T3LaskinHistorialla" style={{ color: 'blue'}}>
+      Tehtävä 3 (Laskin historialla)
+      </Link>
     </View>
   );
 }
@@ -23,5 +26,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  link: {
+    color: 'blue',
   },
 });
