@@ -16,6 +16,9 @@ export default function App() {
       <Link href="/T3LaskinHistorialla" style={{ color: 'blue'}}>
       Tehtävä 3 (Laskin historialla)
       </Link>
+      <Link href="/T4Ostoslista" style={{ color: 'blue'}}>
+      Tehtävä 4 (Ostoslista)
+      </Link>
     </View>
   );
 }
