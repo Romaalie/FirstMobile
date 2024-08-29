@@ -14,8 +14,6 @@ export default function T3LaskinHistorialla() {
         const number1 = parseFloat(input1);
         const number2 = parseFloat(input2);
 
-
-
         if (!isNaN(number1) && !isNaN(number2)) {
             let resultValue;
             let calculationForHistory;
@@ -82,13 +80,11 @@ export default function T3LaskinHistorialla() {
                             </Text>
                         </Pressable>
                     </View>
-
                 </View>
                 <View style={styles.containerBasic}>
                     <Text style={styles.textResult}>
                         History
                     </Text>
-                    {/*For flatlist history*/}
                     <FlatList
                         data={history}
                         keyExtractor={(item) => item.id}
