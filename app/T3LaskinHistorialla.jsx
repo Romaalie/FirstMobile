@@ -7,30 +7,34 @@ export default function T3LaskinHistorialla() {
     const [input1, setInput1] = useState("");
     const [input2, setInput2] = useState("");
     const [result, setResult] = useState("");
+    const [history, setHistory] = useState([]);
 
     const calculateResult = (operation) => {
 
         const number1 = parseFloat(input1);
         const number2 = parseFloat(input2);
 
-        let result;
+
 
         if (!isNaN(number1) && !isNaN(number2)) {
+            let resultValue;
+            let calculationForHistory;
             switch (operation) {
                 case "add":
-                    result = number1 + number2;
-                    setResult(result.toString());
-                    // add setHistory
+                    resultValue = number1 + number2;
+                    calculationForHistory = `${number1} + ${number2} = ${resultValue}`;
                     break;
                 case "subtract":
-                    result = number1 - number2;
-                    setResult(result.toString());
-                    // add setHistory
+                    resultValue = number1 - number2;
+                    calculationForHistory = `${number1} - ${number2} = ${resultValue}`;
                     break;
                 default:
                     setResult("Invalid operation");
-                    break;
+                    return;
             }
+            setResult(resultValue.toString());
+            const newHistoryItem = { id: Date.now().toString(), calculation: calculationForHistory };
+            setHistory([newHistoryItem, ...history]);
             setInput1("");
             setInput2("");
         } else {
@@ -39,6 +43,7 @@ export default function T3LaskinHistorialla() {
             setInput2("");
         }
     }
+    console.log(history);
 
     return (
         < SafeAreaProvider>
@@ -48,43 +53,48 @@ export default function T3LaskinHistorialla() {
                         <Text style={styles.textResult}>
                             Result: {result}
                         </Text>
-                        <TextInput
-                            style={styles.input}
-                            inputMode="numeric"
-                            value={input1}
-                            onChangeText={setInput1}
-                        />
-                        <TextInput
-                            style={styles.input}
-                            inputMode="numeric"
-                            value={input2}
-                            onChangeText={setInput2}
-                        />
-                        <View style={styles.containerButtons}>
-                            <Pressable
-                                onPress={() => calculateResult("add")}
-                                style={styles.buttonCalculator}>
-                                <Text style={styles.textButtons}>
-                                    +
-                                </Text>
-                            </Pressable>
-                            <Pressable
-                                onPress={() => calculateResult("subtract")}
-                                style={styles.buttonCalculator}
-                            >
-                                <Text style={styles.textButtons}>
-                                    -
-                                </Text>
-                            </Pressable>
-                        </View>
                     </View>
+                    <TextInput
+                        style={styles.input}
+                        inputMode="numeric"
+                        value={input1}
+                        onChangeText={setInput1}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        inputMode="numeric"
+                        value={input2}
+                        onChangeText={setInput2}
+                    />
+                    <View style={styles.containerButtons}>
+                        <Pressable
+                            onPress={() => calculateResult("add")}
+                            style={styles.buttonCalculator}>
+                            <Text style={styles.textButtons}>
+                                +
+                            </Text>
+                        </Pressable>
+                        <Pressable
+                            onPress={() => calculateResult("subtract")}
+                            style={styles.buttonCalculator}>
+                            <Text style={styles.textButtons}>
+                                -
+                            </Text>
+                        </Pressable>
+                    </View>
+
                 </View>
-                <View >
+                <View style={styles.containerBasic}>
+                    <Text style={styles.textResult}>
+                        History
+                    </Text>
                     {/*For flatlist history*/}
-                    <FlatList>
-
-                    </FlatList>
-
+                    <FlatList
+                        data={history}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({ item }) => <Text>{item.calculation}</Text>}
+                        ListEmptyComponent={<Text>No history</Text>}
+                    />
                 </View>
             </SafeAreaView>
         </ SafeAreaProvider >
