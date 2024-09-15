@@ -11,7 +11,7 @@ export function T7ApiCaller(apiKey) {
 
     console.log("Api key in apicaller: " + apiKey);
 
-    fetch(`https://api.apilayer.com/exchangerates_data/latest`, requestOptions)
+    return fetch(`https://api.apilayer.com/exchangerates_data/latest`, requestOptions)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Error fetching data from api: status code ${response.status} ${response.statusText}`)
