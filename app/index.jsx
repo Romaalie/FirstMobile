@@ -25,6 +25,9 @@ export default function App() {
       <Link href="/T6ReseptienHaku" style={{ color: 'blue'}}>
       Tehtävä 6 (Reseptien haku)
       </Link>
+      <Link href="/T7EuroMuunnin" style={{ color: 'blue'}}>
+      Tehtävä 7 (Euro Muunnin)
+      </Link>
     </View>
   );
 }
