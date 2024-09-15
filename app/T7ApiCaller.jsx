@@ -1,7 +1,7 @@
-export function T7ApiCaller(key, symbols, base) {
+export function T7ApiCaller(apiKey) {
 
     var myHeaders = new Headers();
-    myHeaders.append("apikey", `${key}`);
+    myHeaders.append("apikey", `${apiKey}`);
 
     var requestOptions = {
         method: 'GET',
@@ -9,13 +9,21 @@ export function T7ApiCaller(key, symbols, base) {
         headers: myHeaders
     };
 
-    fetch(`https://api.apilayer.com/exchangerates_data/latest?symbols=${symbols}&base=${base}`, requestOptions)
+    console.log("Api key in apicaller: " + apiKey);
+
+    fetch(`https://api.apilayer.com/exchangerates_data/latest`, requestOptions)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Error fetching data from api: status code ${response.status} ${response.statusText}`)
             }
-            return response.json()
+            return response.json();
         })
-        .then(result => console.log("Result of api call:" + result))
-        .catch(error => console.log('Non HTML related error in api call', error));
+        .then(result => {
+            console.log("Result of api call:", result)
+            return result;
+        })
+        .catch(error => {
+            console.log('Non HTML related error in api call', error)
+            throw error
+        });
 }

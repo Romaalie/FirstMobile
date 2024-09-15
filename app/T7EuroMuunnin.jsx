@@ -1,6 +1,4 @@
-// <a href="https://www.flaticon.com/free-icons/euro" title="euro icons">Euro icons created by Icongeek26 - Flaticon</a>
-
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Picker } from '@react-native-picker/picker';
@@ -8,17 +6,41 @@ import { T7ApiCaller } from "./T7ApiCaller";
 
 export default function T7EuroMuunnin() {
 
-    const [amount, setAmount] = useState(Number);
+    const [amount, setAmount] = useState("");
     const [unit, setUnit] = useState("");
-    const [conversion, setConversion] = useState(Number);
-    const [rates, setRates] = useState([]);
-    const [selectedRate, setSelectedRate] = useState(1.5);
-    const apiKey = process.env.T7_API_KEY;
-    const pickertestlist = ["EUR", "GBP", "JPY"]
+    const [conversion, setConversion] = useState("");
+    const [rates, setRates] = useState({});
+    const [selectedRate, setSelectedRate] = useState(Number);
+    const apiKey = process.env.EXPO_PUBLIC_T7_API_KEY;
+    console.log("Api key in main component: " + apiKey)
 
-    const calculate = (amount, selectedRate) => {
-        let conversionResult = amount * selectedRate;
-        setConversion(conversionResult);
+    useEffect(() => {
+        const fetchRates = async () => {
+            try {
+                const data = await T7ApiCaller(apiKey);
+                console.log("Fetched data:", data);
+                if (data && data.rates) {
+                    setRates(data.rates)
+                }
+                else {
+                    console.error("There is no data or data does not have rates", data)
+                }
+            }
+            catch (error) {
+                console.error("Error fetching rates (T7Euromuunnin):", error);
+            }
+        };
+        fetchRates();
+    }, []);
+
+    const calculate = () => {
+        const numericAmount = parseFloat(amount);
+        if (!isNaN(numericAmount) && selectedRate !== null) {
+            let conversionResult = amount * selectedRate;
+            setConversion(conversionResult);
+        } else {
+            setConversion("Invalid amount or rate");
+        }
     };
 
     return (
@@ -44,11 +66,12 @@ export default function T7EuroMuunnin() {
                         <Picker
                             style={styles.pickerStyle}
                             selectedValue={unit}
-                            onValueChange={(itemValue, itemIndex) =>
-                                setUnit(itemValue)
-                            }>
-                            {pickertestlist.map((unit, index) => (
-                                <Picker.Item key={index} label={unit} value={unit} />
+                            onValueChange={(itemValue, itemIndex) => {
+                                setUnit(itemValue);
+                                setSelectedRate(rates[itemValue]);
+                            }}>
+                            {Object.keys(rates).map((key, index) => (
+                                <Picker.Item key={index} label={key} value={key} />
                             ))}
                         </Picker>
                     </View>
