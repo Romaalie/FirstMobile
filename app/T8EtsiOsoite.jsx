@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import MapView, { Callout, Marker } from 'react-native-maps';
@@ -21,10 +21,11 @@ export default function T8EtsiOsoite() {
             const data = await T8ApiCaller(address, apikey);
             console.log("T8EtsiOsoite, Fetched data: ", data);
 
-            if(!data || data.length === 0) {
+            if (!data || data.length === 0) {
                 throw new Error("No location found with " + address)
             }
 
+            // This is just taking the first entry, no fancy options presented to the user.
             const newLatitude = parseFloat(data[0].lat);
             const newLongitude = parseFloat(data[0].lon);
             console.log("New Latitude: ", newLatitude);
@@ -41,15 +42,24 @@ export default function T8EtsiOsoite() {
         }
     };
 
+    // Used to refocus the map view on current region if the address is not changed, but the SHOW pressable is pressed. Code by Chat-Gpt.
+    const mapRef = useRef(null);
+
+    useEffect(() => {
+        if (mapRef.current) {
+            mapRef.current.animateToRegion(region, 800);
+        }
+    }, [region]);
+    // Used to refocus the map view on current region if the address is not changed, but the SHOW pressable is pressed. Code by Chat-Gpt.
 
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.containerBasic}>
                     <MapView
+                        ref={mapRef}
                         style={styles.mapView}
-                        region={region}
-                        onRegionChange={this.region}
+                        initialRegion={region}
                     >
                         <Marker
                             coordinate={{
@@ -68,7 +78,6 @@ export default function T8EtsiOsoite() {
                                 </View>
                             </Callout>
                         </Marker>
-
                     </MapView>
 
                     <TextInput
@@ -85,8 +94,6 @@ export default function T8EtsiOsoite() {
                             SHOW
                         </Text>
                     </Pressable>
-
-
                 </View>
             </SafeAreaView>
         </SafeAreaProvider>
@@ -109,18 +116,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         marginTop: 15,
     },
-    containerInput: {
-        flexDirection: "row"
-    },
-    containerResult: {
-        paddingTop: 8,
-        alignItems: "flex-start",
-    },
-    image: {
-        width: '40%',
-        height: undefined,
-        aspectRatio: 1
-    },
     input: {
         height: 40,
         width: '80%',
@@ -136,27 +131,9 @@ const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
     },
-    separator: {
-        height: 1,
-        backgroundColor: 'gray',
-        width: '80%',
-        marginTop: 2,
-        marginBottom: 2,
-        marginLeft: 15
-    },
     textButtonShow: {
         color: 'white',
         fontSize: 15,
         fontWeight: 'bold',
-    },
-    textResult: {
-        fontSize: 17,
-        fontWeight: 'normal'
-    },
-    textIconInfo: {
-        fontSize: 10
-    },
-    pickerStyle: {
-        width: 120
     }
 });
