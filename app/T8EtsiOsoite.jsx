@@ -21,6 +21,10 @@ export default function T8EtsiOsoite() {
             const data = await T8ApiCaller(address, apikey);
             console.log("T8EtsiOsoite, Fetched data: ", data);
 
+            if(!data || data.length === 0) {
+                throw new Error("No location found with " + address)
+            }
+
             const newLatitude = parseFloat(data[0].lat);
             const newLongitude = parseFloat(data[0].lon);
             console.log("New Latitude: ", newLatitude);
@@ -33,7 +37,7 @@ export default function T8EtsiOsoite() {
             }))
         }
         catch (error) {
-            console.error("T8EtsiOsoite, Error fetching data from api:", error);
+            console.error("T8EtsiOsoite, Error fetching data from api.", error);
         }
     };
 
@@ -45,6 +49,7 @@ export default function T8EtsiOsoite() {
                     <MapView
                         style={styles.mapView}
                         region={region}
+                        onRegionChange={this.region}
                     >
                         <Marker
                             coordinate={{
@@ -73,10 +78,10 @@ export default function T8EtsiOsoite() {
                         onChangeText={(value) => setAddress(value)}
                     />
                     <Pressable
-                        style={styles.buttonConvert}
+                        style={styles.buttonShow}
                         onPress={() => handleFetch(address, apikey)}>
                         <Text
-                            style={styles.textButtonConvert}>
+                            style={styles.textButtonShow}>
                             SHOW
                         </Text>
                     </Pressable>
@@ -89,7 +94,7 @@ export default function T8EtsiOsoite() {
 }
 
 const styles = StyleSheet.create({
-    buttonConvert: {
+    buttonShow: {
         borderRadius: 5,
         height: 40,
         width: 90,
@@ -139,7 +144,7 @@ const styles = StyleSheet.create({
         marginBottom: 2,
         marginLeft: 15
     },
-    textButtonConvert: {
+    textButtonShow: {
         color: 'white',
         fontSize: 15,
         fontWeight: 'bold',
