@@ -1,7 +1,7 @@
 export default function T8ApiCaller(address, apikey) {
 
     let url = `https://geocode.maps.co/search?q=${address}&api_key=${apikey}`;
-    console.log("Api Caller address: ", address, "Api caller apikey: ", apikey)
+    console.log("T8 Api Caller address: ", address, "Api caller apikey: ", apikey)
 
     return fetch(url)
         .then(response => {
@@ -11,11 +11,11 @@ export default function T8ApiCaller(address, apikey) {
             return response.json();
         })
         .then(data => {
-            console.log("Api Caller response data: ", data);
+            console.log("T8 Api Caller response data: ", data);
             return data;
         })
         .catch(error => {
-            console.log("Api Caller Non HTML related error: ", error)
+            console.log("T8 Api Caller Non HTML related error: ", error)
             throw error
         });
 }
