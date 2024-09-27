@@ -84,9 +84,6 @@ export default function T11OstoslistaJaSqlite() {
                                 <Text style={styles.textButtonBought} onPress={() => deleteItem(item.id)}>
                                     bought
                                 </Text>
-
-
-
                             </View>}
                         data={purchases}
                     />

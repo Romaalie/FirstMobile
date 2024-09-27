@@ -40,6 +40,9 @@ export default function App() {
       <Link href="/T11OstoslistaJaSqlite" style={{ color: 'blue'}}>
       Tehtävä 11 (Ostoslista & SQLite)
       </Link>
+      <Link href="/T12OstoslistaJaFirebase" style={{ color: 'blue'}}>
+      Tehtävä 12 (Ostoslista & Firebase)
+      </Link>
     </View>
   );
 }
