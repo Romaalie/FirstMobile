@@ -37,6 +37,9 @@ export default function App() {
       <Link href="/T10EtsiOsoiteJaSijainti" style={{ color: 'blue'}}>
       Tehtävä 10 (Etsi osoite & sijainti)
       </Link>
+      <Link href="/T11OstoslistaJaSqlite" style={{ color: 'blue'}}>
+      Tehtävä 11 (Ostoslista & SQLite)
+      </Link>
     </View>
   );
 }
