@@ -46,6 +46,9 @@ export default function App() {
       <Link href="/T13Kontakti" style={{ color: 'blue'}}>
       Tehtävä 13 (Kontakti)
       </Link>
+      <Link href="/T14TekstiPuheeksi" style={{ color: 'blue'}}>
+      Tehtävä 14 (Teksti puheeksi)
+      </Link>
     </View>
   );
 }
