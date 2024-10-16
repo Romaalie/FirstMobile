@@ -11,11 +11,11 @@ export default function T8ApiCaller(address, apikey) {
             return response.json();
         })
         .then(data => {
-            console.log("T8 Api Caller response data: ", data);
+            //console.log("T8 Api Caller response data: ", data);
             return data;
         })
         .catch(error => {
-            console.log("T8 Api Caller Non HTML related error: ", error)
+            //console.log("T8 Api Caller Non HTML related error: ", error)
             throw error
         });
 }

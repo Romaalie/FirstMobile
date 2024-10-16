@@ -22,6 +22,7 @@ export default function T16OsoitekirjaMyPlaces() {
 
     const [address, setAddress] = useState('');
     const [addresses, setAddresses] = useState([]);
+    // Could this be handled differently? Not much meaning having this here, maybe..
     const [region, setRegion] = useState({
         latitude: 0,
         longitude: 0,
@@ -69,23 +70,14 @@ export default function T16OsoitekirjaMyPlaces() {
     const handleFetch = async (providedAddress, apikey) => {
         try {
             const data = await T8ApiCaller(providedAddress, apikey);
-            console.log("T16OsoitekirjaMyPlaces, Fetched data: ", data);
+            //console.log("T16OsoitekirjaMyPlaces, Fetched data: ", data);
 
             if (!data || data.length === 0) {
                 const noAddress = "provided address"
                 throw new Error(`No location found with ${providedAddress ? providedAddress : noAddress}`);
             }
-            // This is just taking the first entry, no fancy options presented to the user.
-            const newLatitude = parseFloat(data[0].lat);
-            const newLongitude = parseFloat(data[0].lon);
-            //console.log("New Latitude: ", newLatitude);
-            //console.log("New Longitude: ", newLongitude);
 
-            setRegion(prevRegion => ({
-                ...prevRegion,
-                latitude: newLatitude,
-                longitude: newLongitude
-            }));
+            return data;
         }
         catch (error) {
             console.error("T16OsoitekirjaMyPlaces, Error fetching data from api.", error);
@@ -93,17 +85,29 @@ export default function T16OsoitekirjaMyPlaces() {
         }
     };
 
-    const showMapScreen = (providedAddress) => {
+    const showMapScreen = async (providedAddress) => {
         const addressToUse = providedAddress || address;
+        //console.log("Provided address: ", providedAddress);
+        // console.log("Address to use: ", addressToUse)
 
-        handleFetch(addressToUse, apikey)
-            .then(() => {
-                navigation.navigate('T16OsoitekirjaMap', { data: region });
-            })
-            .catch(error => {
-                console.error("Mystical error with showMapScreen/handling promise/error");
-                Alert.alert("Location Not Found", "No location found for the provided address. Please try again.");
-            })
+        try {
+            const fetchedData = await handleFetch(addressToUse, apikey)
+
+            // This is just taking the first entry, no fancy options presented to the user.
+            const newLatitude = parseFloat(fetchedData[0].lat);
+            const newLongitude = parseFloat(fetchedData[0].lon);
+
+
+            // Have to use these value because react has not updated the states at this point.
+            navigation.navigate('T16OsoitekirjaMap', {
+                theRegion: { latitude: newLatitude, longitude: newLongitude, latitudeDelta: region.latitudeDelta, longitudeDelta: region.longitudeDelta },
+                theAddress: addressToUse
+            });
+        }
+        catch (error) {
+            console.error("Mystical error with showMapScreen/handling promise/error");
+            Alert.alert("Location Not Found", "No location found for the provided address. Please try again.");
+        }
     }
 
     return (
@@ -135,7 +139,10 @@ export default function T16OsoitekirjaMyPlaces() {
                                 styles.flatlistItem,
                                 index % 2 === 0 ? styles.flatlistItemEven : styles.flatlistItemOdd
                             ]}
-                            onPress={() => showMapScreen(item.address)}
+                            onPress={() => {
+                                showMapScreen(item.address)
+                                //console.log("Onpress address: ", item.address)
+                            }}
                             onLongPress={() => handleDelete(item.id, item.address)}
                         >
                             <View style={styles.containerFlatlistText}>
