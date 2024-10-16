@@ -3,7 +3,7 @@ import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Button, MD3Colors, IconButton, TextInput } from 'react-native-paper';
 
-import { app } from './../firebaseConfig.js';
+import { appT12 } from './../firebaseConfig.js';
 import { getDatabase, ref, push, remove, onValue } from "firebase/database";
 
 
@@ -15,7 +15,7 @@ export default function T15TyylikkaampiOstoslista() {
     });
     const [purchases, setPurchases] = useState([]);
 
-    const database = getDatabase(app);
+    const database = getDatabase(appT12);
 
     // Updates the purchases useState via Firebase eventlistener.
     useEffect(() => {

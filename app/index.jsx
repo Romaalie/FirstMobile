@@ -52,6 +52,9 @@ export default function App() {
       <Link href="/T15TyylikkaampiOstoslista" style={styles.link}>
         Tehtävä 15 (Tyylikkäämpi ostoslista)
       </Link>
+      <Link href="/T16OsoitekirjaMyPlaces" style={styles.link}>
+        Tehtävä 16 (Osoitekirja)
+      </Link>
     </View>
   );
 }
